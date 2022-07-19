@@ -1,0 +1,47 @@
+﻿<Window x:Name="Help_Desk_Main_Window" x:Class="HelpDesk.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HelpDesk"
+        mc:Ignorable="d"
+        Title="Help Desk" Height="500" Width="800" Loaded="Help_Desk_Main_Window_Loaded">
+    <Window.Resources>
+        <local:TicketDatabaseDataSet x:Key="ticketDatabaseDataSet"/>
+        <CollectionViewSource x:Key="ticketsViewSource" Source="{Binding Tickets, Source={StaticResource ticketDatabaseDataSet}}"/>
+    </Window.Resources>
+    <Grid Margin="0,0,0,-6" DataContext="{StaticResource ticketsViewSource}">
+        <Grid Background="#FFE5E5E5" DataContext="{StaticResource ticketsViewSource}">
+            <Label x:Name="techSearchLabel" Content="Search by Technician:" HorizontalAlignment="Left" Margin="24,23,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="searchTechButton" Content="Search" HorizontalAlignment="Left" Margin="442,24,0,0" VerticalAlignment="Top" Height="23" Width="56" Click="searchTechButton_Click"/>
+            <Button x:Name="resetButton" Content="Reset" HorizontalAlignment="Left" Margin="512,24,0,0" VerticalAlignment="Top" Height="23" Width="56" Click="resetButton_Click"/>
+            <Button x:Name="editButton" Content="Manage Tickets" HorizontalAlignment="Left" Margin="275,406,0,0" VerticalAlignment="Top" Width="250" Height="35" Click="editButton_Click"/>
+            <TextBox x:Name="technicianSearchBox" HorizontalAlignment="Left" Height="23" Margin="146,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <CheckBox x:Name="resolvedCheckBox" Content="Resolved" HorizontalAlignment="Left" Margin="275,29,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="unresolvedCheckBox" Content="Unresolved" HorizontalAlignment="Left" Margin="347,29,0,0" VerticalAlignment="Top"/>
+            <DataGrid x:Name="ticketsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="24,54,24,90" RowDetailsVisibilityMode="VisibleWhenSelected" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="technicianColumn1" Binding="{Binding Technician}" Header="Technician" Width="110"/>
+                    <DataGridTemplateColumn x:Name="date_RequestedColumn1" Header="Date Requested" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding Date Requested, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="descriptionColumn1" Binding="{Binding Description}" Header="Description" Width="150"/>
+                    <DataGridTemplateColumn x:Name="date_CompletedColumn1" Header="Date Completed" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding Date Completed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="notesColumn1" Binding="{Binding Notes}" Header="Notes" Width="150"/>
+                    <DataGridCheckBoxColumn x:Name="resolvedColumn1" Binding="{Binding Resolved}" Header="Resolved" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="requestIDColumn1" Binding="{Binding RequestID}" Header="Request ID" IsReadOnly="True" Width="SizeToHeader"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>
